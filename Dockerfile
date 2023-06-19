@@ -1,6 +1,10 @@
-FROM        python:3.6
-RUN         mkdir /app
-WORKDIR     /app
-COPY        payment.ini payment.py rabbitmq.py requirements.txt /app/
-RUN         pip3 install -r requirements.txt
-ENTRYPOINT         ["uwsgi", "--ini", "payment.ini"]
+FROM python:3.9
+EXPOSE 8080
+USER root
+WORKDIR /app
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
+COPY *.py /app/
+COPY payment.ini /app/
+#CMD ["python", "payment.py"]
+CMD ["uwsgi", "--ini", "payment.ini"]
